@@ -36,7 +36,7 @@ process Classify{
 	errorStrategy 'finish'
     tag "$pair_id"
 
-	//publishDir "$params.outdir/Results_${params.DataDir}_${params.today}/NonBovID", mode: 'copy', pattern: '*.tab'
+	publishDir "$params.outdir/Results/Bracken_output", mode: 'copy', pattern: '*.tab'
 
 	maxForks 1
 
