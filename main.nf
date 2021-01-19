@@ -36,18 +36,17 @@ process Classify{
 	errorStrategy 'finish'
     tag "$pair_id"
 
-	publishDir "$params.outdir/Results_${params.DataDir}_${params.today}/NonBovID", mode: 'copy', pattern: '*.tab'
+	//publishDir "$params.outdir/Results_${params.DataDir}_${params.today}/NonBovID", mode: 'copy', pattern: '*.tab'
 
 	maxForks 1
 
 	input:
-	set pair_id, file('outcome.txt'), file("${pair_id}_trim_R1.fastq"), file("${pair_id}_trim_R2.fastq") from IDdata
+	set pair_id, file("${pair_id}_trim_R1.fastq"), file("${pair_id}_trim_R2.fastq") from trim_read_pairs
 
 	output:
-	set pair_id, file("${pair_id}_*_brackensort.tab"), file("${pair_id}_*_kraken2.tab")  optional true into IDnonbovis
-	file("${pair_id}_bovis.csv") optional true into QueryBovis
-
+	set pair_id, file("${pair_id}_brackensort.tab"), file("${pair_id}_kraken2.tab")  optional true into IDnonbovis
+	
 	"""
-	classify.bash $pair_id
+	classify.bash $pair_id $kraken2db
 	"""
 }
