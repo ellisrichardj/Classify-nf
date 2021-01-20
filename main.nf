@@ -1,7 +1,6 @@
 #!/usr/bin/env nextflow
 
 /* Default parameters */
-params.lowmem = ""
 params.reads = "$PWD/*_{S*_R1,S*_R2}*.fastq.gz"
 params.outdir = "$PWD"
 dependpath = file(params.dependPath)
@@ -25,7 +24,7 @@ process Trim {
 	set pair_id, file("${pair_id}_*_R1_*.fastq.gz"), file("${pair_id}_*_R2_*.fastq.gz") from read_pairs
 
 	output:
-	set pair_id, file("${pair_id}_trim_R1.fastq"), file("${pair_id}_trim_R2.fastq") into trim_read_pairs
+	set pair_id, file("${pair_id}_trim_R1.fastq.gz), file("${pair_id}_trim_R2.fastq.gz") into trim_read_pairs
 	
 	"""
 	trim.bash ${pair_id}
@@ -41,10 +40,10 @@ process Classify{
 	maxForks 1
 
 	input:
-	set pair_id, file("${pair_id}_trim_R1.fastq"), file("${pair_id}_trim_R2.fastq") from trim_read_pairs
+	set pair_id, file("${pair_id}_trim_R1.fastq.gz"), file("${pair_id}_trim_R2.fastq.gz") from trim_read_pairs
 
 	output:
-	set pair_id, file("${pair_id}_brackensort.tab"), file("${pair_id}_kraken2.tab")  optional true into IDnonbovis
+	set pair_id, file("${pair_id}_brackensort.tab"), file("${pair_id}_kraken2.tab")  optional true into BrackenOut
 	
 	"""
 	classify.bash $pair_id $kraken2db
