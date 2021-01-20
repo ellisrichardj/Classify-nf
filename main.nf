@@ -24,14 +24,14 @@ process Trim {
 	set pair_id, file("${pair_id}_*_R1_*.fastq.gz"), file("${pair_id}_*_R2_*.fastq.gz") from read_pairs
 
 	output:
-	set pair_id, file("${pair_id}_trim_R1.fastq.gz), file("${pair_id}_trim_R2.fastq.gz") into trim_read_pairs
+	set pair_id, file("${pair_id}_trim_R1.fastq.gz"), file("${pair_id}_trim_R2.fastq.gz") into trim_read_pairs
 	
 	"""
 	trim.bash ${pair_id}
 	"""
 }
 
-process Classify{
+process Classify {
 	errorStrategy 'finish'
     tag "$pair_id"
 
