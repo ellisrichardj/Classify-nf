@@ -27,7 +27,7 @@ process Trim {
 	set pair_id, file("${pair_id}_trim_R1.fastq.gz"), file("${pair_id}_trim_R2.fastq.gz") into trim_read_pairs
 	
 	"""
-	trim.bash ${pair_id}
+	trim.bash $pair_id $dependpath
 	"""
 }
 
@@ -46,6 +46,6 @@ process Classify {
 	set pair_id, file("${pair_id}_brackensort.tab"), file("${pair_id}_kraken2.tab")  optional true into BrackenOut
 	
 	"""
-	classify.bash $pair_id $kraken2db
+	classify.bash $pair_id $kraken2db $dependpath
 	"""
 }
